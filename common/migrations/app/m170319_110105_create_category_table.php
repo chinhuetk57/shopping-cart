@@ -19,7 +19,7 @@ class m170319_110105_create_category_table extends Migration
             'create_at'=>$this->integer(),
             'update_at'=>$this->integer(),
             'create_by'=>$this->integer(),
-            'create_by'=>$this->integer(),
+            'update_by'=>$this->integer(),
             
         ]);
     }

@@ -1,8 +1,10 @@
 <?php
 
 namespace common\models\store;
-
+use common\models\User;
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "product_category".
@@ -23,6 +25,25 @@ class ProductCategory extends \yii\db\ActiveRecord
     {
         return 'product_category';
     }
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'create_at',
+                'updatedAtAttribute' => 'update_at',
+
+
+            ],
+            [
+                'class' => BlameableBehavior::className(),
+
+                'createdByAttribute' => 'create_by',
+                'updatedByAttribute' => 'update_by',
+            ]
+
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -31,7 +52,7 @@ class ProductCategory extends \yii\db\ActiveRecord
     {
         return [
             ['name','required'],
-            [['status', 'create_at', 'update_at', 'create_by'], 'integer'],
+            [['status', 'create_at', 'update_at', 'create_by','update_by'], 'integer'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -49,5 +70,10 @@ class ProductCategory extends \yii\db\ActiveRecord
             'update_at' => 'Update At',
             'create_by' => 'Create By',
         ];
+    }
+
+    public function getCreate()
+    {
+        return $this->hasOne(User::className(),['id'=>'create_by']);
     }
 }
